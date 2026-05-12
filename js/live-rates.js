@@ -1,9 +1,13 @@
 /**
  * Live Rates Script for Gold & Silver
- * Uses GoldAPI.io for real-time prices.
+ * Primary source: GoldAPI.io INR endpoints.
+ * Backup source: gold-api.com USD metal prices + public USD/INR exchange rate.
  */
 
-// Format price in Indian Rupees
+const GOLDAPI_KEY = 'goldapi-22df21b5666ffb9da3b28a6434da17fe-io';
+const TROY_OUNCE_IN_GRAMS = 31.1034768;
+const RATE_REFRESH_MS = 5 * 60 * 1000;
+
 function formatINR(price) {
     return new Intl.NumberFormat('en-IN', {
         style: 'currency',
@@ -12,93 +16,112 @@ function formatINR(price) {
     }).format(price);
 }
 
-// Update DOM elements with a subtle flash animation
-function updateDOM(goldPrice, silverPrice) {
+function setRateText(goldText, silverText) {
     const goldEl = document.getElementById('live-gold-price');
     const silverEl = document.getElementById('live-silver-price');
-    
-    if (!goldEl || !silverEl) return;
 
-    // Check if price changed to trigger animation
-    const oldGold = goldEl.dataset.price;
-    if (oldGold && oldGold != goldPrice) {
-        goldEl.classList.add('price-flash');
-        setTimeout(() => goldEl.classList.remove('price-flash'), 1000);
-    }
-    goldEl.dataset.price = goldPrice;
-
-    const oldSilver = silverEl.dataset.price;
-    if (oldSilver && oldSilver != silverPrice) {
-        silverEl.classList.add('price-flash');
-        setTimeout(() => silverEl.classList.remove('price-flash'), 1000);
-    }
-    silverEl.dataset.price = silverPrice;
-
-    goldEl.textContent = formatINR(goldPrice) + " / 10g";
-    silverEl.textContent = formatINR(silverPrice) + " / 1kg";
+    if (goldEl) goldEl.textContent = goldText;
+    if (silverEl) silverEl.textContent = silverText;
 }
 
-// --- REAL API INTEGRATION ---
-const API_KEY = 'goldapi-22df21b5666ffb9da3b28a6434da17fe-io'; 
+function flashIfChanged(element, newPrice) {
+    if (!element) return;
+
+    const oldPrice = element.dataset.price;
+    if (oldPrice && oldPrice !== String(newPrice)) {
+        element.classList.add('price-flash');
+        setTimeout(() => element.classList.remove('price-flash'), 1000);
+    }
+
+    element.dataset.price = String(newPrice);
+}
+
+function updateDOM(goldPer10g, silverPer1kg) {
+    const goldEl = document.getElementById('live-gold-price');
+    const silverEl = document.getElementById('live-silver-price');
+
+    flashIfChanged(goldEl, goldPer10g);
+    flashIfChanged(silverEl, silverPer1kg);
+
+    setRateText(`${formatINR(goldPer10g)} / 10g`, `${formatINR(silverPer1kg)} / 1kg`);
+}
+
+async function fetchJSON(url, options = {}) {
+    const response = await fetch(url, {
+        cache: 'no-store',
+        ...options
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(data.error || `${url} failed with status ${response.status}`);
+    }
+
+    return data;
+}
+
+async function fetchGoldApiRate(symbol) {
+    return fetchJSON(`https://www.goldapi.io/api/${symbol}/INR`, {
+        method: 'GET',
+        headers: {
+            'x-access-token': GOLDAPI_KEY,
+            'Content-Type': 'application/json'
+        }
+    });
+}
+
+async function fetchPrimaryRates() {
+    const [goldData, silverData] = await Promise.all([
+        fetchGoldApiRate('XAU'),
+        fetchGoldApiRate('XAG')
+    ]);
+
+    return {
+        goldPer10g: Math.round((goldData.price / TROY_OUNCE_IN_GRAMS) * 10),
+        silverPer1kg: Math.round((silverData.price / TROY_OUNCE_IN_GRAMS) * 1000)
+    };
+}
+
+async function fetchBackupRates() {
+    const [goldData, silverData, exchangeData] = await Promise.all([
+        fetchJSON('https://api.gold-api.com/price/XAU'),
+        fetchJSON('https://api.gold-api.com/price/XAG'),
+        fetchJSON('https://open.er-api.com/v6/latest/USD')
+    ]);
+
+    const usdToInr = exchangeData.rates && exchangeData.rates.INR;
+    if (!usdToInr) {
+        throw new Error('USD to INR exchange rate unavailable');
+    }
+
+    const goldInrPerOunce = goldData.price * usdToInr;
+    const silverInrPerOunce = silverData.price * usdToInr;
+
+    return {
+        goldPer10g: Math.round((goldInrPerOunce / TROY_OUNCE_IN_GRAMS) * 10),
+        silverPer1kg: Math.round((silverInrPerOunce / TROY_OUNCE_IN_GRAMS) * 1000)
+    };
+}
 
 async function fetchRealLiveRates() {
+    setRateText('Fetching live...', 'Fetching live...');
+
     try {
-        const headers = new Headers();
-        headers.append("x-access-token", API_KEY);
-        headers.append("Content-Type", "application/json");
+        const rates = await fetchPrimaryRates();
+        updateDOM(rates.goldPer10g, rates.silverPer1kg);
+    } catch (primaryError) {
+        console.warn('GoldAPI.io unavailable, trying backup live rate source:', primaryError);
 
-        const requestOptions = {
-            method: 'GET',
-            headers: headers,
-            redirect: 'follow'
-        };
-
-        // Fetch Gold (XAU) in INR
-        const goldRes = await fetch("https://www.goldapi.io/api/XAU/INR", requestOptions);
-        if (!goldRes.ok) throw new Error("Network response was not ok");
-        const goldData = await goldRes.json();
-        
-        // Convert per ounce to per 10 grams (1 troy ounce = 31.1034768 grams)
-        const goldPerGram = goldData.price / 31.1034768;
-        const goldPer10g = Math.round(goldPerGram * 10);
-
-        // Fetch Silver (XAG) in INR
-        const silverRes = await fetch("https://www.goldapi.io/api/XAG/INR", requestOptions);
-        if (!silverRes.ok) throw new Error("Network response was not ok");
-        const silverData = await silverRes.json();
-        
-        // Convert per ounce to per 1kg
-        const silverPerGram = silverData.price / 31.1034768;
-        const silverPer1Kg = Math.round(silverPerGram * 1000);
-
-        updateDOM(goldPer10g, silverPer1Kg);
-
-    } catch (error) {
-        console.error("Error fetching real rates:", error);
-        // Fallback to simulation if real API fails (e.g. CORS error)
-        simulateLiveRates();
+        try {
+            const rates = await fetchBackupRates();
+            updateDOM(rates.goldPer10g, rates.silverPer1kg);
+        } catch (backupError) {
+            console.error('All live metal rate sources failed:', backupError);
+            setRateText('Live rate unavailable', 'Live rate unavailable');
+        }
     }
 }
 
-// --- FALLBACK SIMULATION ---
-let baseGoldPrice = 73250;
-let baseSilverPrice = 91500;
-
-function simulateLiveRates() {
-    updateDOM(baseGoldPrice, baseSilverPrice);
-    setInterval(() => {
-        baseGoldPrice += Math.floor(Math.random() * 101) - 50; 
-        baseSilverPrice += Math.floor(Math.random() * 201) - 100;
-        updateDOM(baseGoldPrice, baseSilverPrice);
-    }, 10000);
-}
-
-// --- INITIALIZATION ---
-// Since the script is loaded at the bottom of the body, DOM is already ready.
-fetchRealLiveRates().then(() => {
-    // Successfully fetched real rates
-}).catch((err) => {
-    console.error("Initialization error:", err);
-    // If it fails completely, fallback to simulation
-    simulateLiveRates();
-});
+fetchRealLiveRates();
+setInterval(fetchRealLiveRates, RATE_REFRESH_MS);

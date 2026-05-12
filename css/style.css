@@ -1066,8 +1066,11 @@ img {
 }
 
 .team-member img {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
     border-radius: 50%;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
     box-shadow: var(--shadow);
     transition: transform 0.45s ease, box-shadow 0.45s ease;
 }

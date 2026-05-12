@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Soni Jewellers</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <!-- Live Rates Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            📈 <span>Live Market Rates:</span> Gold (24K) - <span id="live-gold-price">Loading...</span> | Silver - <span id="live-silver-price">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">SONI<span>.</span></a>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+            <div class="nav-icons">
+                <a href="cart.html" class="cart-icon">
+                    🛒
+                    <span class="cart-badge" style="display: none;">0</span>
+                </a>
+                <div class="hamburger">☰</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1>Our Story</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> / About
+            </div>
+        </div>
+    </div>
+
+    <!-- About Content -->
+    <section class="section reveal" style="padding-top: 0;">
+        <div class="container">
+            <div class="about-content">
+                <div>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 20px;">A Legacy of Excellence</h2>
+                    <p style="margin-bottom: 20px; font-size: 1.1rem; color: var(--color-text-light);">
+                        Founded in 1995, Soni Jewellers has been at the forefront of luxury jewellery design for over two decades. Our journey began with a simple passion: to craft exquisite pieces that tell a story and capture the essence of timeless elegance.
+                    </p>
+                    <p style="margin-bottom: 20px; font-size: 1.1rem; color: var(--color-text-light);">
+                        Every piece in our collection is a testament to our commitment to unparalleled craftsmanship. We source only the finest ethical diamonds, vibrant gemstones, and precious metals, ensuring that each creation is not just an accessory, but an heirloom to be cherished for generations.
+                    </p>
+                    <p style="font-size: 1.1rem; color: var(--color-text-light);">
+                        Our mission is to empower individuals to express their unique style and celebrate life's most precious moments with jewellery that is as extraordinary as they are.
+                    </p>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1573408301145-b98c46544837?auto=format&fit=crop&q=80&w=800" alt="Jewellery Crafting" style="box-shadow: var(--shadow-hover);">
+                </div>
+            </div>
+            
+            <!-- Team Section -->
+            <div style="margin-top: 80px;">
+                <h2 class="section-title">Meet Our Artisans</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400&h=400" alt="Ram Nath Soni">
+                        <h3 style="margin-bottom: 5px;">Ram Nath Soni</h3>
+                        <p style="color: var(--color-secondary); font-weight: 500; font-family: var(--font-body); text-transform: uppercase; font-size: 0.9rem;">Master Jeweller & Founder</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400&h=400" alt="Priya Sharma">
+                        <h3 style="margin-bottom: 5px;">Priya Sharma</h3>
+                        <p style="color: var(--color-secondary); font-weight: 500; font-family: var(--font-body); text-transform: uppercase; font-size: 0.9rem;">Lead Designer</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400&h=400" alt="Vikram Desai">
+                        <h3 style="margin-bottom: 5px;">Vikram Desai</h3>
+                        <p style="color: var(--color-secondary); font-weight: 500; font-family: var(--font-body); text-transform: uppercase; font-size: 0.9rem;">Gemologist</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> Soni Jewellers. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/cart.js"></script>
+    <script src="js/main.js?v=motion"></script>
+    <script src="js/live-rates.js"></script>
+</body>
+</html>

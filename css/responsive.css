@@ -1,0 +1,133 @@
+/* Media Queries */
+
+/* Tablets and below */
+@media (max-width: 991px) {
+    .shop-container, .product-detail, .cart-container, .about-content, .contact-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .pd-img-container {
+        height: 400px;
+    }
+    
+    .offer-banner {
+        flex-direction: column;
+    }
+    
+    .offer-img {
+        height: 300px;
+        width: 100%;
+    }
+
+    .shop-sidebar {
+        position: static;
+        padding-right: 0;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+    }
+
+    .page-header,
+    .hero {
+        background-attachment: scroll;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 108px;
+        left: -100%;
+        flex-direction: column;
+        background-color: var(--color-bg);
+        width: 100%;
+        height: calc(100vh - 108px);
+        text-align: center;
+        transition: 0.3s;
+        padding-top: 50px;
+        box-shadow: var(--shadow);
+    }
+
+    .nav-links.active {
+        left: 0;
+    }
+
+    .nav-links li {
+        margin: 20px 0;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .category-card {
+        height: 280px;
+    }
+
+    .top-bar {
+        font-size: 0.75rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .cart-table th:nth-child(3), .cart-table td:nth-child(3) {
+        display: none; /* Hide individual price on very small screens to save space */
+    }
+    
+    .payment-methods {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero {
+        height: 78vh;
+    }
+
+    .hero::after {
+        bottom: 18px;
+        height: 42px;
+    }
+
+    .offer-content {
+        padding: 42px 22px;
+    }
+
+    .offer-content h2,
+    .page-header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .pd-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+}

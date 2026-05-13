@@ -20,3 +20,5 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase services
 export const auth = getAuth(app); // Authentication Service
 export const db = getFirestore(app); // Firestore database
+
+console.log("✅ Firebase is successfully connected and initialized!");

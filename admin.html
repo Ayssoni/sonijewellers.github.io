@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="admin-nav">
+            <h2>Admin Dashboard</h2>
+            <button id="logout-btn">Logout</button>
+        </nav>
+
+        <section class="admin-stats">
+            <h3>Website Overview</h3>
+            <div class="stat-card">
+                <h4>Total Users</h4>
+                <p id="total-users">Loading...</p>
+            </div>
+            <div class="stat-card">
+                <h4>Active Sessions</h4>
+                <p id="active-sessions">Loading...</p>
+            </div>
+        </section>
+
+        <section class="admin-actions">
+            <h3>Actions</h3>
+            <button class="action-btn" onclick="manageUsers()">Manage Users</button>
+            <button class="action-btn" onclick="editContent()">Edit Website Content</button>
+        </section>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -6,29 +6,99 @@
     <title>Login</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/auth.css">
+    <!-- Firebase SDK for JavaScript -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
+    <!-- Firebase and Auth Config -->
+    <script src="js/firebase-config.js" type="module"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 </head>
 <body>
     <div class="auth-container">
-        <h2>Login</h2>
-        <form id="login-form">
-            <div class="form-group">
+        <h1>Welcome to Aysso Logins</h1>
+        <p>Please log in using one of the methods below.</p>
+
+        <!-- Google Login -->
+        <div class="login-method">
+            <h2>Google Sign-In</h2>
+            <button id="google-login-btn">Sign in with Google</button>
+        </div>
+
+        <!-- Phone Login -->
+        <div class="login-method">
+            <h2>Phone Number Login</h2>
+            <div id="recaptcha-container"></div>
+            <input type="tel" id="phone-number" placeholder="Enter your phone number">
+            <button id="send-otp-btn">Send OTP</button>
+            <input type="text" id="otp-code" placeholder="Enter OTP">
+            <button id="verify-otp-btn">Verify OTP</button>
+        </div>
+
+        <!-- Email/Password Login -->
+        <div class="login-method">
+            <h2>Email/Password Login</h2>
+            <form id="email-auth-form">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
+                <input type="email" id="email" placeholder="Enter your email" required>
+                
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="role">Login As:</label>
-                <select id="role" name="role">
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
-            <button type="submit">Login</button>
-        </form>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                
+                <div class="form-buttons">
+                    <button id="login-email-btn" type="button">Log In</button>
+                    <button id="signup-email-btn" type="button">Sign Up</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <script src="js/auth.js"></script>
+
+    <script type="module">
+        // Import authentication logic
+        import { 
+            loginWithGoogle 
+        } from "./js/auth/google-auth.js";
+        import { 
+            setupRecaptcha, 
+            sendOTP, 
+            verifyOTP 
+        } from "./js/auth/phone-auth.js";
+        import { 
+            loginWithEmail, 
+            signUpWithEmail 
+        } from "./js/auth/email-auth.js";
+
+        // Google Login
+        document.getElementById("google-login-btn")
+            .addEventListener("click", loginWithGoogle);
+
+        // Phone Login
+        setupRecaptcha();
+        document.getElementById("send-otp-btn").addEventListener("click", () => {
+            const phoneNumber = document.getElementById("phone-number").value;
+            sendOTP(phoneNumber);
+        });
+
+        document.getElementById("verify-otp-btn").addEventListener("click", () => {
+            const otpCode = document.getElementById("otp-code").value;
+            verifyOTP(otpCode);
+        });
+
+        // Email Login
+        document.getElementById("signup-email-btn").addEventListener("click", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const name = prompt("Enter your name:");
+            signUpWithEmail(email, password, name);
+        });
+
+        document.getElementById("login-email-btn").addEventListener("click", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            loginWithEmail(email, password);
+        });
+    </script>
 </body>
 </html>

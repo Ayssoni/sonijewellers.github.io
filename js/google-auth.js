@@ -1,29 +1,29 @@
-import { auth, db } from "./firebase-config.js";
+import { auth, db } from "../firebase-config.js";
 import { GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 import { doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-// Set up Google Authentication
+// Google Provider
 const provider = new GoogleAuthProvider();
 
-// Handle Google login
-document.getElementById("google-login-btn").addEventListener("click", async () => {
+// Google Sign-In Function
+export async function loginWithGoogle() {
     try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
 
-        // Save user details to Firestore
+        // Save user data to Firestore
         await setDoc(doc(db, "users", user.uid), {
             name: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
             role: "user", // Default role
-            createdAt: new Date()
+            createdAt: new Date(),
         });
 
-        alert(`Welcome, ${user.displayName}. You are signed in!`);
+        alert(`Welcome ${user.displayName}, you are logged in!`);
         window.location.href = "/index.html"; // Redirect after login
     } catch (error) {
         console.error("Google Login Error:", error.message);
-        alert(error.message);
+        alert("Google Sign-In failed. Please try again.");
     }
-});
+}

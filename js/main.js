@@ -119,7 +119,7 @@ function updateCartBadge() {
     }
 }
 
-// Utility to format price
+// Utility to format price in Indian Rupees
 function formatPrice(price) {
-    return '$' + price.toFixed(2);
+    return '₹' + Math.round(price).toLocaleString('en-IN');
 }

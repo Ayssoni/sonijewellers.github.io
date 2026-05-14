@@ -123,7 +123,7 @@ function initShopFilters() {
 
     if (priceSlider) {
         priceSlider.addEventListener('input', (e) => {
-            priceDisplay.textContent = `$0 - $${e.target.value}`;
+            priceDisplay.textContent = `₹0 - ₹${parseInt(e.target.value).toLocaleString('en-IN')}`;
             filterProducts();
         });
     }

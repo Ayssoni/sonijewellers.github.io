@@ -16,14 +16,22 @@ export async function loginWithGoogle() {
             name: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
-            role: "user", // Default role
+            role: "user",
             createdAt: new Date(),
         });
 
         alert(`Welcome ${user.displayName}, you are logged in!`);
-        window.location.href = "/index.html"; // Redirect after login
+        window.location.href = "/index.html";
     } catch (error) {
-        console.error("Google Login Error:", error.message);
-        alert("Google Sign-In failed. Please try again.");
+        console.error("Google Login Error:", error.code, error.message);
+        if (error.code === 'auth/operation-not-allowed') {
+            alert('Google authentication is not enabled in Firebase Console');
+        } else if (error.code === 'auth/popup-blocked') {
+            alert('Popup was blocked. Please allow popups for this site.');
+        } else if (error.code === 'auth/unauthorized-domain') {
+            alert('This domain is not authorized. Add it in Firebase Console settings.');
+        } else {
+            alert("Google Sign-In failed: " + error.message);
+        }
     }
 }

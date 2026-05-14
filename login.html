@@ -25,7 +25,10 @@
         <div class="login-method">
             <h2>Phone Number Login</h2>
             <div id="recaptcha-container"></div>
-            <input type="tel" id="phone-number" placeholder="Enter your phone number">
+            <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                <input type="text" id="country-code" placeholder="+91" value="+91" style="width: 70px;">
+                <input type="tel" id="phone-number" placeholder="Enter your 10-digit phone number" style="flex: 1;">
+            </div>
             <button id="send-otp-btn">Send OTP</button>
             <input type="text" id="otp-code" placeholder="Enter OTP">
             <button id="verify-otp-btn">Verify OTP</button>
@@ -71,8 +74,10 @@
         // Phone Login
         setupRecaptcha();
         document.getElementById("send-otp-btn").addEventListener("click", () => {
+            const countryCode = document.getElementById("country-code").value || "+91";
             const phoneNumber = document.getElementById("phone-number").value;
-            sendOTP(phoneNumber);
+            const fullPhoneNumber = countryCode + phoneNumber;
+            sendOTP(fullPhoneNumber);
         });
 
         document.getElementById("verify-otp-btn").addEventListener("click", () => {

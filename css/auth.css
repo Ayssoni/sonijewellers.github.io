@@ -1,42 +1,126 @@
-.auth-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 70px 20px;
 }
 
-.auth-container h2 {
+.auth-container {
+    width: min(980px, 100%);
+    margin: 0 auto;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 36px;
+    display: grid;
+    gap: 24px;
+}
+
+.auth-header {
+    display: grid;
+    gap: 8px;
+}
+
+.auth-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    font-weight: 500;
+}
+
+.auth-subtitle {
+    color: var(--color-text-light);
+}
+
+.auth-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+}
+
+.auth-card {
+    padding: 20px;
+    background: var(--color-bg-light);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    display: grid;
+    gap: 12px;
+}
+
+.auth-card h2 {
+    font-size: 1.25rem;
+}
+
+.auth-meta {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+}
+
+.auth-form {
+    display: grid;
+    gap: 10px;
+}
+
+.auth-form label {
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.auth-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    font-family: var(--font-body);
+    background: #fff;
+    transition: var(--transition);
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.phone-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.auth-input-code {
+    max-width: 90px;
     text-align: center;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
 }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
+.form-buttons .auth-btn {
+    flex: 1 1 140px;
 }
 
-.form-group input, .form-group select {
+.auth-btn {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.auth-note {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
 }
 
-button:hover {
-    background-color: #0056b3;
+@media (max-width: 720px) {
+    .auth-container {
+        padding: 24px;
+    }
+
+    .auth-header {
+        text-align: center;
+    }
 }

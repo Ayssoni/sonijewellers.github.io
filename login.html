@@ -10,45 +10,56 @@
     <script src="js/firebase-config.js" type="module"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
 </head>
-<body>
+<body class="auth-page">
     <div class="auth-container">
-        <h1>Welcome to Aysso Logins</h1>
-        <p>Please log in using one of the methods below.</p>
-
-        <!-- Google Login -->
-        <div class="login-method">
-            <h2>Google Sign-In</h2>
-            <button id="google-login-btn">Sign in with Google</button>
+        <div class="auth-header">
+            <p class="auth-eyebrow">Soni Jewellers</p>
+            <h1>Welcome back</h1>
+            <p class="auth-subtitle">Sign in to manage orders, track favorites, and checkout faster.</p>
         </div>
 
-        <!-- Phone Login -->
-        <div class="login-method">
-            <h2>Phone Number Login</h2>
-            <div id="recaptcha-container"></div>
-            <div style="display: flex; gap: 5px; margin-bottom: 10px;">
-                <input type="text" id="country-code" placeholder="+91" value="+91" style="width: 70px;">
-                <input type="tel" id="phone-number" placeholder="Enter your 10-digit phone number" style="flex: 1;">
-            </div>
-            <button id="send-otp-btn">Send OTP</button>
-            <input type="text" id="otp-code" placeholder="Enter OTP">
-            <button id="verify-otp-btn">Verify OTP</button>
-        </div>
+        <div class="auth-grid">
+            <!-- Google Login -->
+            <section class="auth-card">
+                <h2>Google Sign-In</h2>
+                <p class="auth-meta">Use your Google account for instant access.</p>
+                <button id="google-login-btn" class="btn btn-primary auth-btn" type="button">Sign in with Google</button>
+            </section>
 
-        <!-- Email/Password Login -->
-        <div class="login-method">
-            <h2>Email/Password Login</h2>
-            <form id="email-auth-form">
-                <label for="email">Email:</label>
-                <input type="email" id="email" placeholder="Enter your email" required>
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" placeholder="Enter your password" required>
-                
-                <div class="form-buttons">
-                    <button id="login-email-btn" type="button">Log In</button>
-                    <button id="signup-email-btn" type="button">Sign Up</button>
+            <!-- Phone Login -->
+            <section class="auth-card">
+                <h2>Phone Number Login</h2>
+                <p class="auth-meta">We’ll send a one-time password to verify.</p>
+                <div id="recaptcha-container"></div>
+                <div class="phone-input-group">
+                    <input type="text" id="country-code" class="auth-input auth-input-code" placeholder="+91" value="+91" inputmode="tel" autocomplete="tel-country-code">
+                    <input type="tel" id="phone-number" class="auth-input" placeholder="Enter your 10-digit phone number" inputmode="tel" autocomplete="tel-national">
                 </div>
-            </form>
+                <button id="send-otp-btn" class="btn btn-outline auth-btn" type="button">Send OTP</button>
+                <input type="text" id="otp-code" class="auth-input" placeholder="Enter OTP" inputmode="numeric" autocomplete="one-time-code">
+                <button id="verify-otp-btn" class="btn btn-primary auth-btn" type="button">Verify OTP</button>
+            </section>
+
+            <!-- Email/Password Login -->
+            <section class="auth-card">
+                <h2>Email &amp; Password</h2>
+                <form id="email-auth-form" class="auth-form">
+                    <label for="full-name">Full Name</label>
+                    <input type="text" id="full-name" class="auth-input" placeholder="Enter your full name" autocomplete="name">
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="auth-input" placeholder="Enter your email" autocomplete="email" required>
+                    
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="auth-input" placeholder="Enter your password" autocomplete="current-password" required>
+                    
+                    <div class="form-buttons">
+                        <button id="login-email-btn" class="btn btn-outline auth-btn" type="button">Log In</button>
+                        <button id="signup-email-btn" class="btn btn-primary auth-btn" type="button">Sign Up</button>
+                    </div>
+                    <p class="auth-note">Full name is required only for sign up.</p>
+                </form>
+            </section>
         </div>
     </div>
 
@@ -90,7 +101,7 @@
             e.preventDefault();
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
-            const name = prompt("Enter your name:");
+            const name = document.getElementById("full-name").value.trim();
             signUpWithEmail(email, password, name);
         });
 

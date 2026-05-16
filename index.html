@@ -27,7 +27,9 @@
                 <li><a href="shop.html">Shop</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li>
+                    <a href="login.html" id="auth-link">Login</a>
+                </li>
             </ul>
 
             <div class="nav-icons">
@@ -159,5 +161,46 @@
     <script src="js/shop.js?v=motion"></script>
     <script src="js/main.js?v=motion"></script>
     <script src="js/live-rates.js"></script>
+
+    <!-- Firebase Auth (Module) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+        // ✅ Paste your Firebase config here (from Firebase Console → Project Settings → Web App)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDXPwRJXqPoUTtAqt5DCbumF4Lq-8MWBpY",
+            authDomain: "sonijewellers-1976.firebaseapp.com",
+            projectId: "sonijewellers-1976",
+            storageBucket: "sonijewellers-1976.firebasestorage.app",
+            messagingSenderId: "924385120103",
+            appId: "1:924385120103:web:aa8548cf80db742f29a9c2",
+            measurementId: "G-HX8PRKM6R6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const authLink = document.getElementById("auth-link");
+
+        // Switch Login -> Logout when user is signed in
+        onAuthStateChanged(auth, (user) => {
+            if (!authLink) return;
+
+            if (user) {
+                authLink.textContent = "Logout";
+                authLink.href = "#";
+                authLink.onclick = async (e) => {
+                    e.preventDefault();
+                    await signOut(auth);
+                    window.location.href = "index.html";
+                };
+            } else {
+                authLink.textContent = "Login";
+                authLink.href = "login.html";
+                authLink.onclick = null;
+            }
+        });
+    </script>
 </body>
 </html>

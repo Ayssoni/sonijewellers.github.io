@@ -5,13 +5,13 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.2/firebase
 
 // Replace with your Firebase configuration values
 const firebaseConfig = {
-    apiKey: "AIzaSyBWjXaHi75gynSkf4yIG9d5TqRulan85hQ",
-  authDomain: "ayssoni-auth.firebaseapp.com",
-  projectId: "ayssoni-auth",
-  storageBucket: "ayssoni-auth.firebasestorage.app",
-  messagingSenderId: "195951934620",
-  appId: "1:195951934620:web:24a7b9602512bc4b2a8159",
-  measurementId: "G-JZ25DE0ZJ0"
+    apiKey: "AIzaSyDXPwRJXqPoUTtAqt5DCbumF4Lq-8MWBpY",
+    authDomain: "sonijewellers-1976.firebaseapp.com",
+    projectId: "sonijewellers-1976",
+    storageBucket: "sonijewellers-1976.firebasestorage.app",
+    messagingSenderId: "924385120103",
+    appId: "1:924385120103:web:aa8548cf80db742f29a9c2",
+    measurementId: "G-HX8PRKM6R6"
 };
 
 // Initialize Firebase
